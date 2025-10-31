@@ -39,7 +39,7 @@ const AppController = (() => {
     projectId,
     fields /* {title, description, dueDate, priority, notes} */
   ) {
-    // instantiate Todo with defaults (checklist: [], completed:false, timestamps)
+    // instantiate Todo with defaults (completed:false, timestamps)
     // push into project.todos; saveState; return snapshot
   }
 
@@ -55,21 +55,11 @@ const AppController = (() => {
     // CODE
   }
 
-  function moveTodo(projecIdFrom, projectIdTo, todoId) {
+  function moveTodo(projectIdFrom, projectIdTo, todoId) {
     // remove from one project, push into another; saveState
   }
 
-  function addChecklistItem(projectId, todoId, label) {
-    // CODE
-  }
-
-  function toggleChecklistItem(projectId, todoId, itemId) {
-    // TODO
-  }
-
-  function removeChecklistItem(projectId, todoId, itemId) {
-    // TODO
-  }
+  // Checklist functionality removed
 
   // ----- Derived state / selectors -----
   function getSnapshot() {
@@ -87,9 +77,6 @@ const AppController = (() => {
     toggleTodoComplete,
     deleteTodo,
     moveTodo,
-    addChecklistItem,
-    toggleChecklistItem,
-    removeChecklistItem,
     getSnapshot,
   };
 })();

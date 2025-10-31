@@ -17,7 +17,7 @@ export function renderTodoList(parentEl, todos) {
 
 // Detail panel (expanded editor)
 export function renderTodoDetail(parentEl, todo) {
-  // CODE: editable fields; checlist UI
+  // CODE: editable fields for a single todo
 }
 
 // UI helpers: apply priority colors, empty states, etc.
