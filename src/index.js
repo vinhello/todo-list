@@ -10,6 +10,7 @@ window.createProject = createProject;
 window.saveState = saveState;
 window.loadState = loadState;
 window.clearState = clearState;
+window.AppController = AppController;
 
 // Listener for when the DOM finishes loading
 document.addEventListener("DOMContentLoaded", () => {

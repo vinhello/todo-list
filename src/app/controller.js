@@ -9,38 +9,125 @@ const AppController = (() => {
   };
 
   function init() {
-    // createProject({ id: generateId("proj"), name, todos: [], createdAt: now })
-    // push into state.projects; set selectedProjectId; saveState(state)
-    // return snapshot
+    // update in-memory state
+    const loadedState = loadState();
+    state.projects = loadedState.projects;
+    state.selectedProjectId = loadedState.selectedProjectId;
+
+    // return snapshot for initial render
+    return getSnapshot();
   }
 
-  // ----- Project operations -----
+  // ----- PROJECT OPERATIONS -----
   function createProjectAndSelect(name) {
-    // TODO: createProject({ id: generateId('proj'), name, todos: [], createdAt: now })
-    // TODO: push into state.projects; set selectedProjectId; saveState(state)
-    // TODO: return snapshot
+    // Create a project
+    const project = createProject({
+      name,
+    });
+
+    // Push project into state
+    state.projects.push(project);
+
+    // Set selectedProjectId
+    state.selectedProjectId = project.id;
+
+    // Save the state
+    saveState(state);
+
+    // Return snapshot
+    return getSnapshot();
   }
 
   function renameProject(projectId, newName) {
-    // find project; set name; saveState
+    // Validate name input
+    if (!newName || newName.trim() === "") {
+      throw new Error("Project name cannot be empty");
+    }
+
+    // Find project
+    const foundProject = state.projects.find(
+      (project) => project.id === projectId
+    );
+
+    // Error if project not found
+    if (!foundProject) {
+      throw new Error(`Project with id ${projectId} not found`);
+    }
+
+    // Set name
+    foundProject.name = newName;
+
+    // Save state
+    saveState(state);
+
+    // Return snapshot
+    return getSnapshot();
   }
 
   function deleteProject(projectId) {
-    // guard against deleting the last project
-    // remove it; if selected was deleted, select another; saveState
+    // Guard against deleting the last project
+    if (state.projects.length < 2) {
+      throw new Error("At least one project is required.");
+    }
+
+    // Find project index
+    const index = state.projects.findIndex(
+      (project) => project.id === projectId
+    );
+
+    // Error if project not found
+    if (index === -1) {
+      throw new Error(`Project with id ${projectId} not found`);
+    }
+
+    // Used to check if the deleted project is the selected one
+    const wasSelected = state.selectedProjectId === projectId;
+
+    // Delete project
+    state.projects.splice(index, 1);
+
+    // Only update selection if the deleted project was selected
+    // Checking length as another safety check before updating to the new project id
+    if (wasSelected && state.projects.length > 0) {
+      state.selectedProjectId = state.projects[0].id;
+    }
+
+    // Save state
+    saveState(state);
+
+    // Return snapshot
+    return getSnapshot();
   }
 
   function selectProject(projectId) {
     // set selectedProjectId (if exists); saveState
+
+    // Find project
+    const project = state.projects.find((project) => project.id === projectId);
+
+    // Error if project not found
+    if (!project) {
+      throw new Error(`Project with id ${projectId} not found`);
+    }
+
+    // Set selected project's id
+    state.selectedProjectId = projectId;
+
+    // Save state
+    saveState(state);
+
+    // Return snapshot
+    return getSnapshot();
   }
 
-  // ----- Todo operations
-  function addTodo(
-    projectId,
-    fields /* {title, description, dueDate, priority, notes} */
-  ) {
+  // ----- TODO OPERATIONS
+
+  // Add todo
+  // fields = {title, description, dueDate, priority, notes}
+  function addTodo(projectId, fields) {
     // instantiate Todo with defaults (completed:false, timestamps)
     // push into project.todos; saveState; return snapshot
+    // CONTINUE HERE
   }
 
   function updateTodo(projectId, todoId, updates /* partial fields */) {
@@ -59,11 +146,10 @@ const AppController = (() => {
     // remove from one project, push into another; saveState
   }
 
-  // Checklist functionality removed
-
   // ----- Derived state / selectors -----
   function getSnapshot() {
-    // TODO: return deep-cloned, read-only-ish snapshot for the UI
+    // Return deep-clone of current state for UI
+    return structuredClone(state);
   }
 
   return {
