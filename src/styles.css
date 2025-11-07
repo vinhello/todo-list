@@ -1,4 +1,127 @@
 /* styles.css */
+/* Basic Layout */
 body {
-  background-color: rebeccapurple;
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+  background: #f0f1f3;
+}
+
+#app {
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+  min-height: 400px;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 220px;
+  background: #222c37;
+  color: #fff;
+  padding: 1.2rem 1rem;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid #dde2e8;
+}
+
+.sidebar h2 {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+}
+
+/* Main Content */
+.main {
+  flex: 2 1 0;
+  padding: 2rem;
+  background: #fff;
+  min-width: 0;
+  border-right: 1px solid #dde2e8;
+  box-sizing: border-box;
+  overflow-y: auto;
+}
+
+/* Detail Panel */
+.detail-panel {
+  width: 320px;
+  max-width: 30vw;
+  background: #f8fafc;
+  padding: 2rem 1.5rem;
+  box-sizing: border-box;
+  border-left: 1px solid #dde2e8;
+  overflow-y: auto;
+}
+
+/* Example Card/Row for Todos */
+.todo-card {
+  background: #f4f7fa;
+  border-radius: 6px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 1px 2px rgba(20, 30, 50, 0.03);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Priority Badge Helper */
+.priority-badge {
+  display: inline-block;
+  min-width: 60px;
+  text-align: center;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 0.85em;
+  color: #fff;
+  margin-left: 0.75rem;
+}
+
+.priority-low {
+  background: #6cb87a;
+}
+.priority-medium {
+  background: #e6a23c;
+}
+.priority-high {
+  background: #d45d5d;
+}
+
+/* Example Styles for Project List */
+.project-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.project-list li {
+  margin-bottom: 0.3rem;
+}
+
+.project-list button {
+  width: 100%;
+  background: transparent;
+  border: none;
+  color: inherit;
+  text-align: left;
+  padding: 4px 0;
+  cursor: pointer;
+  font: inherit;
+  border-radius: 4px;
+  transition: background 0.15s;
+}
+
+.project-list button.selected,
+.project-list button:focus {
+  background: #30405a;
+  outline: none;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #dde2e8;
+  border-radius: 4px;
 }
