@@ -173,23 +173,15 @@ export function attachHandlers(rootEl) {
   // ============================================
   // CHANGE EVENT HANDLER (For Form Inputs)
   // ============================================
-  // Listen for changes on input/textarea/select elements
-  // These are in the detail panel (renderTodoDetail)
-  // Get todoId and action from data attributes
-  // Call controller.updateTodo with the new value
 
   rootEl.addEventListener("change", (e) => {
     // Check if the changed element has data-action and data-todo-id
-    // const action = e.target.getAttribute('data-action');
-    // const todoId = e.target.getAttribute('data-todo-id');
     const action = e.target.getAttribute("data-action");
     const todoId = e.target.getAttribute("data-todo-id");
 
     if (!action || !todoId) return;
 
     // Get selected projectId
-    // const snapshot = AppController.getSnapshot();
-    // const projectId = snapshot.selectedProjectId;
     const snapshot = AppController.getSnapshot();
     const projectId = snapshot.selectedProjectId;
 
