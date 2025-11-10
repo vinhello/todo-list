@@ -1,6 +1,11 @@
 // DOM rendering only; no app logic
 // Use formatDue from utils/date.js if imported
 import { formatDue } from "../utils/date.js";
+import {
+  getProjects,
+  getSelectedProject,
+  getTodosForProject,
+} from "../app/selectors.js";
 
 export function renderApp(containerEl, snapshot) {
   //Clear container (remove all existing content)
@@ -25,18 +30,24 @@ export function renderApp(containerEl, snapshot) {
   containerEl.append(detailPanel);
 
   // Call render functions:
-  // Render projects sidebar
-  renderProjectList(sidebarEl, snapshot.projects, snapshot.selectedProjectId);
+  // Render projects sidebar (using selector for computed counts)
+  const projectsWithCounts = getProjects(snapshot);
+  renderProjectList(sidebarEl, projectsWithCounts, snapshot.selectedProjectId);
 
-  // Get selected project
-  const selected = snapshot.projects.find(
-    (p) => p.id === snapshot.selectedProjectId
-  );
-  if (selected && selected.todos) {
-    // Render todos
-    renderTodoList(mainEl, selected.todos);
+  // Get selected project using selector
+  const selected = getSelectedProject(snapshot);
+  if (selected && snapshot.selectedProjectId) {
+    // Get todos for selected project (sorted by due date/priority)
+    const todos = getTodosForProject(snapshot, snapshot.selectedProjectId);
+    if (todos.length > 0) {
+      // Render todos
+      renderTodoList(mainEl, todos);
+    } else {
+      // Empty state: no todos in selected project
+      mainEl.textContent = "No todos in this project";
+    }
   } else {
-    // Empty state: no project selected or no todos
+    // Empty state: no project selected
     mainEl.textContent = "Select a project or add todos";
   }
 

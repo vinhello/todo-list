@@ -1,5 +1,6 @@
 import AppController from "../app/controller.js";
 import { renderApp, renderTodoDetail } from "./view.js";
+import { getSelectedProject, getProjects } from "../app/selectors.js";
 
 export function attachHandlers(rootEl) {
   // Call initial render
@@ -59,7 +60,8 @@ export function attachHandlers(rootEl) {
       if (projectId) {
         // Get project name for confirmation
         const snapshot = AppController.getSnapshot();
-        const project = snapshot.projects.find((p) => p.id === projectId);
+        const projects = getProjects(snapshot);
+        const project = projects.find((p) => p.id === projectId);
         const projectName = project?.name || "this project";
         const confirmDelete = window.confirm(
           `Are you sure you want to delete "${projectName}"? This action cannot be undone.`
@@ -117,9 +119,8 @@ export function attachHandlers(rootEl) {
         e.target.closest("[data-todo-id]")?.getAttribute("data-todo-id");
       if (todoId) {
         const snapshot = AppController.getSnapshot();
-        const projectId = snapshot.selectedProjectId;
-        // Find the selected project from the snapshot
-        const project = snapshot.projects.find((p) => p.id === projectId);
+        // Find the selected project using selector
+        const project = getSelectedProject(snapshot);
         // Find the todo within the selected project
         const todo = project?.todos.find((t) => t.id === todoId);
         if (todo) {
@@ -150,11 +151,10 @@ export function attachHandlers(rootEl) {
         e.target.closest("[data-todo-id]")?.getAttribute("data-todo-id");
       if (todoId) {
         const snapshot = AppController.getSnapshot();
-        const projectId = snapshot.selectedProjectId;
         // Verify user really wants to delete (confirmation dialog)
         const todoTitle = (() => {
           // Try to extract todo title for better confirmation message
-          const project = snapshot.projects.find((p) => p.id === projectId);
+          const project = getSelectedProject(snapshot);
           const todo = project?.todos.find((t) => t.id === todoId);
           return todo?.title || "this to-do";
         })();
@@ -162,6 +162,7 @@ export function attachHandlers(rootEl) {
           `Are you sure you want to delete "${todoTitle}"? This action cannot be undone.`
         );
         if (!confirmDelete) return;
+        const projectId = snapshot.selectedProjectId;
         AppController.deleteTodo(projectId, todoId);
         // Re-render app with updated state
         const updatedSnapshot = AppController.getSnapshot();
